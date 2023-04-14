@@ -4,6 +4,7 @@ interface GameState {
 	diffuses: number;
 	cardsLeft: number;
 	deck: number[];
+	resetCards: boolean;
 }
 
 // var numbers = [];
@@ -22,7 +23,8 @@ const initialState: GameState = {
 		Math.floor(Math.random() * 4),
 		Math.floor(Math.random() * 4),
 		Math.floor(Math.random() * 4)
-	]
+	],
+	resetCards: false
 };
 
 const gameStateSlice = createSlice({
@@ -35,9 +37,48 @@ const gameStateSlice = createSlice({
 		diffuseCard(state) {
 			state.diffuses++;
 			state.cardsLeft--;
+		},
+
+		kittenCard(state) {
+			if (state.diffuses !== 0) {
+				state.resetCards = !state.resetCards;
+
+				state.diffuses--;
+				state.cardsLeft--;
+			} else {
+				state.cardsLeft = 5;
+
+				state.deck = [
+					Math.floor(Math.random() * 4),
+					Math.floor(Math.random() * 4),
+					Math.floor(Math.random() * 4),
+					Math.floor(Math.random() * 4),
+					Math.floor(Math.random() * 4)
+				];
+			}
+		},
+
+		shuffleCard(state) {
+			state.cardsLeft = 5;
+			state.resetCards = !state.resetCards;
+			state.diffuses = 0;
+
+			state.deck = [
+				Math.floor(Math.random() * 4),
+				Math.floor(Math.random() * 4),
+				Math.floor(Math.random() * 4),
+				Math.floor(Math.random() * 4),
+				Math.floor(Math.random() * 4)
+			];
 		}
+
+		// resetCardsAction(state) {
+		// 	console.log('Reset Pressed');
+		// 	state.resetCards = !state.resetCards;
+		// }
 	}
 });
 
-export const { catCard, diffuseCard } = gameStateSlice.actions;
+export const { catCard, diffuseCard, shuffleCard, kittenCard } =
+	gameStateSlice.actions;
 export default gameStateSlice.reducer;

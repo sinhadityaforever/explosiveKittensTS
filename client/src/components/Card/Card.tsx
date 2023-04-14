@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import frontImage from '../../assets/front-pattern.avif';
-import catCard from '../../assets/0.jpg';
-import kittenCard from '../../assets/1.jpg';
-import shuffleCard from '../../assets/2.jpg';
-import diffuseCard from '../../assets/3.jpg';
-import backImage from '../../assets/back-image.jpg';
+import catCardImage from '../../assets/0.jpg';
+import kittenCardImage from '../../assets/1.jpg';
+import shuffleCardImage from '../../assets/2.jpg';
+import diffuseCardImage from '../../assets/3.jpg';
+import backImageImage from '../../assets/back-image.jpg';
 import './Card.css';
 import { cardData } from './cardData';
+//import { resetCardsAction } from '../../features/gameState/gameStateSlice';
+import { catCard } from '../../features/gameState/gameStateSlice';
+import { kittenCard } from '../../features/gameState/gameStateSlice';
+import { shuffleCard } from '../../features/gameState/gameStateSlice';
+import { diffuseCard } from '../../features/gameState/gameStateSlice';
+
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface IProps {
 	id: number;
@@ -15,30 +22,68 @@ interface IProps {
 
 function Card(props: IProps) {
 	const [isFlipped, setIsFlipped] = useState(false);
+	var resetCards = useAppSelector((state) => state.gameState.resetCards);
+	useEffect(() => {
+		return () => {
+			console.log('updated');
+
+			setIsFlipped(false);
+		};
+	}, [resetCards]);
+
 	let imageSrc;
 
 	switch (props.id) {
 		case 0:
-			imageSrc = catCard;
+			imageSrc = catCardImage;
 			break;
 		case 1:
-			imageSrc = kittenCard;
+			imageSrc = kittenCardImage;
 			break;
 		case 2:
-			imageSrc = shuffleCard;
+			imageSrc = shuffleCardImage;
 			break;
 		case 3:
-			imageSrc = diffuseCard;
+			imageSrc = diffuseCardImage;
 			break;
 		default:
-			imageSrc = backImage;
+			imageSrc = backImageImage;
 	}
 
+	const dispatch = useAppDispatch();
+
+	//defining each card's function
+	const catCardUtil = () => {
+		dispatch(catCard());
+	};
+	const kittenCardUtil = () => {
+		dispatch(kittenCard());
+	};
+	const diffuseCardUtil = () => {
+		dispatch(diffuseCard());
+	};
+	const shuffleCardUtil = () => {
+		dispatch(shuffleCard());
+	};
 	const handleFlip = () => {
 		if (!isFlipped) {
 			setIsFlipped(true);
+			if (props.id === 0) {
+				catCardUtil();
+			} else if (props.id === 3) {
+				diffuseCardUtil();
+			}
+			setTimeout(() => {
+				if (props.id === 1) {
+					alert('You have lost the game');
+					kittenCardUtil();
+				} else if (props.id === 2) {
+					shuffleCardUtil();
+				}
+			}, 500);
 		}
 	};
+
 	return (
 		<div
 			className={`flip-card ${isFlipped ? 'flipped' : ''}`}
