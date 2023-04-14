@@ -5,6 +5,7 @@ interface GameState {
 	cardsLeft: number;
 	deck: number[];
 	resetCards: boolean;
+	numberOfWins: number;
 }
 
 // var numbers = [];
@@ -24,45 +25,56 @@ const initialState: GameState = {
 		Math.floor(Math.random() * 4),
 		Math.floor(Math.random() * 4)
 	],
-	resetCards: false
+	resetCards: false,
+	numberOfWins: 0
 };
 
 const gameStateSlice = createSlice({
 	name: 'gameState',
 	initialState,
 	reducers: {
+		//1. Cat Card Selected
 		catCard(state) {
 			state.cardsLeft--;
+			console.log(state.cardsLeft);
 		},
+
+		//2. Diffuse Card Selected
 		diffuseCard(state) {
 			state.diffuses++;
 			state.cardsLeft--;
+			console.log(state.cardsLeft);
 		},
 
+		//3. KittenCard Selected (shuffling the deck separately)
 		kittenCard(state) {
 			if (state.diffuses !== 0) {
-				state.resetCards = !state.resetCards;
-
 				state.diffuses--;
 				state.cardsLeft--;
+				console.log(state.cardsLeft);
 			} else {
+				state.resetCards = !state.resetCards;
 				state.cardsLeft = 5;
-
-				state.deck = [
-					Math.floor(Math.random() * 4),
-					Math.floor(Math.random() * 4),
-					Math.floor(Math.random() * 4),
-					Math.floor(Math.random() * 4),
-					Math.floor(Math.random() * 4)
-				];
 			}
 		},
 
+		//4. ShuffleCard Selected (This only updates values, deck is shuffled separately)
 		shuffleCard(state) {
 			state.cardsLeft = 5;
 			state.resetCards = !state.resetCards;
 			state.diffuses = 0;
+		},
 
+		//5. If the game is won
+		gameWon(state) {
+			state.numberOfWins++;
+			state.resetCards = !state.resetCards;
+			state.diffuses = 0;
+			state.cardsLeft = 5;
+		},
+
+		//6. Update Deck
+		updateDeck(state) {
 			state.deck = [
 				Math.floor(Math.random() * 4),
 				Math.floor(Math.random() * 4),
@@ -71,14 +83,15 @@ const gameStateSlice = createSlice({
 				Math.floor(Math.random() * 4)
 			];
 		}
-
-		// resetCardsAction(state) {
-		// 	console.log('Reset Pressed');
-		// 	state.resetCards = !state.resetCards;
-		// }
 	}
 });
 
-export const { catCard, diffuseCard, shuffleCard, kittenCard } =
-	gameStateSlice.actions;
+export const {
+	catCard,
+	diffuseCard,
+	shuffleCard,
+	kittenCard,
+	gameWon,
+	updateDeck
+} = gameStateSlice.actions;
 export default gameStateSlice.reducer;

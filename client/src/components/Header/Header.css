@@ -1,0 +1,15 @@
+.game-header {
+	background-color: #ffcc66;
+	border: 5px solid #e64c3c;
+	border-radius: 10px;
+	padding: 20px;
+	text-align: center;
+}
+
+.game-header h1 {
+	font-size: 48px;
+	color: #e64c3c;
+	text-shadow: 2px 2px #333;
+	margin: 0;
+	font-family: 'Press Start 2P', cursive;
+}

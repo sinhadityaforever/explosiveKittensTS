@@ -9,7 +9,11 @@ import backImageImage from '../../assets/back-image.jpg';
 import './Card.css';
 import { cardData } from './cardData';
 //import { resetCardsAction } from '../../features/gameState/gameStateSlice';
-import { catCard } from '../../features/gameState/gameStateSlice';
+import {
+	catCard,
+	gameWon,
+	updateDeck
+} from '../../features/gameState/gameStateSlice';
 import { kittenCard } from '../../features/gameState/gameStateSlice';
 import { shuffleCard } from '../../features/gameState/gameStateSlice';
 import { diffuseCard } from '../../features/gameState/gameStateSlice';
@@ -23,10 +27,10 @@ interface IProps {
 function Card(props: IProps) {
 	const [isFlipped, setIsFlipped] = useState(false);
 	var resetCards = useAppSelector((state) => state.gameState.resetCards);
+	var defusesLeft = useAppSelector((state) => state.gameState.diffuses);
+	const dispatch = useAppDispatch();
 	useEffect(() => {
 		return () => {
-			console.log('updated');
-
 			setIsFlipped(false);
 		};
 	}, [resetCards]);
@@ -50,20 +54,28 @@ function Card(props: IProps) {
 			imageSrc = backImageImage;
 	}
 
-	const dispatch = useAppDispatch();
-
 	//defining each card's function
 	const catCardUtil = () => {
 		dispatch(catCard());
 	};
-	const kittenCardUtil = () => {
+	const kittenCardUtil = (defuses: number) => {
 		dispatch(kittenCard());
+		setTimeout(() => {
+			if (defuses === 0) {
+				alert('You have lost the game!');
+				dispatch(updateDeck());
+			}
+		}, 500);
 	};
+
 	const diffuseCardUtil = () => {
 		dispatch(diffuseCard());
 	};
 	const shuffleCardUtil = () => {
 		dispatch(shuffleCard());
+		setTimeout(() => {
+			dispatch(updateDeck());
+		}, 500);
 	};
 	const handleFlip = () => {
 		if (!isFlipped) {
@@ -73,10 +85,10 @@ function Card(props: IProps) {
 			} else if (props.id === 3) {
 				diffuseCardUtil();
 			}
+
 			setTimeout(() => {
 				if (props.id === 1) {
-					alert('You have lost the game');
-					kittenCardUtil();
+					kittenCardUtil(defusesLeft);
 				} else if (props.id === 2) {
 					shuffleCardUtil();
 				}
