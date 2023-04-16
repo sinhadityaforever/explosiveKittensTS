@@ -93,7 +93,11 @@ app.post('/user/:id', async (req, res) => {
 
 app.get('/user', async (req, res) => {
 	try {
-		const users = await userRepository.search().return.all();
+		const users = await userRepository
+			.search()
+			// .sortBy('numberOfWins')
+			.sortDescending('numberOfWins')
+			.return.all();
 		const filteredUsers = users.map(({ username, numberOfWins }) => ({
 			username,
 			numberOfWins

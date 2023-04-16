@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Card from '../Card/Card';
 import { gameWon } from '../../features/gameState/gameStateSlice';
 import './GameContainer.css';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
-import { scoreUpdater } from '../../api/apiCalls';
+import { fetchLeaderBoard, scoreUpdater } from '../../api/apiCalls';
+import Leaderboard from '../LeaderBoard/Leaderboard';
 
 function GameContainer() {
 	var cards = useAppSelector((state) => state.gameState.deck);
@@ -15,6 +16,7 @@ function GameContainer() {
 	var isLoggedIn = useAppSelector((state) => state.gameState.isLoggedIn);
 	var entityId = useAppSelector((state) => state.gameState.entityId);
 	const dispatch = useAppDispatch();
+
 	useEffect(() => {
 		return () => {
 			if (cardsLeftInGame === 1) {
@@ -34,32 +36,40 @@ function GameContainer() {
 			</div>
 
 			{isLoggedIn ? (
-				<div className="middle-container">
-					<div className="game-container">
-						<Card id={cards[0]} />
-						<Card id={cards[1]} />
-						<Card id={cards[2]} />
-						<Card id={cards[3]} />
-						<Card id={cards[4]} />
-					</div>
-					<div className="defuses-container">
-						<h1 className="defuses-title">
-							Defuses Left: <span className="defuses-number">{defuses}</span>
-						</h1>
-					</div>
+				<div>
+					{' '}
+					<div className="middle-container">
+						<div className="game-container">
+							<Card id={cards[0]} />
+							<Card id={cards[1]} />
+							<Card id={cards[2]} />
+							<Card id={cards[3]} />
+							<Card id={cards[4]} />
+						</div>
+						<div className="defuses-container">
+							<h1 className="defuses-title">
+								Defuses Left: <span className="defuses-number">{defuses}</span>
+							</h1>
+						</div>
 
-					<div className="game-win-count">
-						<div className="game-win-count__header">
-							<h2>Wins</h2>
+						<div className="game-win-count">
+							<div className="game-win-count__header">
+								<h2>Wins</h2>
+							</div>
+							<div className="game-win-count__count">
+								<p>{numberOfWins}</p>
+							</div>
 						</div>
-						<div className="game-win-count__count">
-							<p>{numberOfWins}</p>
-						</div>
+					</div>
+					<div>
+						<Leaderboard />
 					</div>
 				</div>
 			) : (
 				<div>
-					<Login />
+					<div>
+						<Login />
+					</div>
 				</div>
 			)}
 		</div>

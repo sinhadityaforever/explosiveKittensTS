@@ -26,14 +26,24 @@ function Login() {
 	return (
 		<div className="login-overlay">
 			<div className="login-box">
-				<h2>Login to play the game</h2>
+				<h2>Enter to play the game</h2>
 				<label>
 					Username:
-					<input value={username} type="text" onChange={handleUsernameChange} />
+					<input
+						placeholder="Choose a username"
+						value={username}
+						type="text"
+						onChange={handleUsernameChange}
+					/>
 				</label>
 				<label>
 					Secret Key:
-					<input value={secret} type="password" onChange={handleSecretChange} />
+					<input
+						placeholder="Chose a Secret"
+						value={secret}
+						type="password"
+						onChange={handleSecretChange}
+					/>
 				</label>
 				<button onClick={handleLogin}>Login</button>
 			</div>

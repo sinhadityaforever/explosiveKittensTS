@@ -32,3 +32,12 @@ export const scoreUpdater = async (id: string) => {
 		console.log(error);
 	}
 };
+
+export const fetchLeaderBoard = async () => {
+	try {
+		const response = await api.get(`/`);
+		return response.data;
+	} catch (error: any) {
+		console.log(error.message);
+	}
+};

@@ -1,0 +1,22 @@
+.leaderboard-container {
+	font-family: Arial, sans-serif;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	margin-top: 55vh;
+	margin-left: 20vw;
+	max-width: 40rem;
+}
+
+.leaderboard-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.leaderboard-list li {
+	margin: 5px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}

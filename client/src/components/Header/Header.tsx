@@ -3,7 +3,7 @@ import './Header.css';
 function Header() {
 	return (
 		<header className="game-header">
-			<h1>Explosive Kittens!</h1>
+			<h1>Exploding Kittens!</h1>
 		</header>
 	);
 }
