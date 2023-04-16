@@ -14,6 +14,15 @@ function Login() {
 		setSecret(event.target.value);
 	};
 	const handleLogin = async () => {
+		if (username.length === 0 || secret.length === 0) {
+			alert('Please enter a value');
+			return;
+		}
+		const regex = /\s+/g;
+		if (username.match(regex) || secret.match(regex)) {
+			alert('No spaces allowed');
+			return;
+		}
 		const response = await loginHandler(username, secret);
 		const data = {
 			entityId: response.entityId,
@@ -30,7 +39,7 @@ function Login() {
 				<label>
 					Username:
 					<input
-						placeholder="Choose a username"
+						placeholder="Choose a username. No spaces allowed!"
 						value={username}
 						type="text"
 						onChange={handleUsernameChange}
