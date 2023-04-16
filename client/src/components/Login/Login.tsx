@@ -15,7 +15,13 @@ function Login() {
 	};
 	const handleLogin = async () => {
 		const response = await loginHandler(username, secret);
-		dispatch(userLogin(response.numberOfWins));
+		const data = {
+			entityId: response.entityId,
+			numberOfWins: response.numberOfWins
+		};
+		console.log(data);
+
+		dispatch(userLogin(data));
 	};
 	return (
 		<div className="login-overlay">

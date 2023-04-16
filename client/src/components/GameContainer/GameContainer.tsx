@@ -5,6 +5,7 @@ import { gameWon } from '../../features/gameState/gameStateSlice';
 import './GameContainer.css';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
+import { scoreUpdater } from '../../api/apiCalls';
 
 function GameContainer() {
 	var cards = useAppSelector((state) => state.gameState.deck);
@@ -12,17 +13,19 @@ function GameContainer() {
 	var numberOfWins = useAppSelector((state) => state.gameState.numberOfWins);
 	var cardsLeftInGame = useAppSelector((state) => state.gameState.cardsLeft);
 	var isLoggedIn = useAppSelector((state) => state.gameState.isLoggedIn);
+	var entityId = useAppSelector((state) => state.gameState.entityId);
 	const dispatch = useAppDispatch();
 	useEffect(() => {
 		return () => {
 			if (cardsLeftInGame === 1) {
-				setTimeout(() => {
+				setTimeout(async () => {
 					alert('You have won');
+					await scoreUpdater(entityId);
 					dispatch(gameWon());
 				}, 500);
 			}
 		};
-	}, [cardsLeftInGame, dispatch]);
+	}, [cardsLeftInGame, dispatch, entityId]);
 
 	return (
 		<div>

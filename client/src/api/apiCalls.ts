@@ -15,6 +15,7 @@ export const loginHandler = async (username: string, secretKey: string) => {
 			username,
 			secretKey
 		});
+		console.log(response.data);
 		return response.data;
 	} catch (error: any) {
 		console.log(error.message);
@@ -22,6 +23,12 @@ export const loginHandler = async (username: string, secretKey: string) => {
 };
 
 export const scoreUpdater = async (id: string) => {
+	console.log('Id To Update:', id);
+
 	try {
-	} catch (error) {}
+		const response = await api.post(`/${id}`);
+		console.log(response.data);
+	} catch (error: any) {
+		console.log(error);
+	}
 };

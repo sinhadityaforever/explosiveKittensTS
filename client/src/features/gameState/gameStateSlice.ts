@@ -1,12 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, EntityId, PayloadAction } from '@reduxjs/toolkit';
 
 interface GameState {
 	isLoggedIn: boolean;
+	entityId: string;
 	diffuses: number;
 	cardsLeft: number;
 	deck: number[];
 	resetCards: boolean;
 	numberOfWins: number;
+}
+
+interface LoginInput {
+	numberOfWins: number;
+	entityId: string;
 }
 
 // var numbers = [];
@@ -18,14 +24,16 @@ interface GameState {
 
 const initialState: GameState = {
 	isLoggedIn: false,
+	entityId: '',
 	diffuses: 0,
 	cardsLeft: 5,
 	deck: [
-		Math.floor(Math.random() * 4),
-		Math.floor(Math.random() * 4),
-		Math.floor(Math.random() * 4),
-		Math.floor(Math.random() * 4),
-		Math.floor(Math.random() * 4)
+		// Math.floor(Math.random() * 4),
+		// Math.floor(Math.random() * 4),
+		// Math.floor(Math.random() * 4),
+		// Math.floor(Math.random() * 4),
+		// Math.floor(Math.random() * 4)
+		0, 0, 0, 0, 0
 	],
 	resetCards: false,
 	numberOfWins: 0
@@ -36,9 +44,11 @@ const gameStateSlice = createSlice({
 	initialState,
 	reducers: {
 		//0. Login
-		userLogin(state, action: PayloadAction<number>) {
+		userLogin(state, action: PayloadAction<LoginInput>) {
 			state.isLoggedIn = true;
-			state.numberOfWins = action.payload;
+			state.numberOfWins = action.payload.numberOfWins;
+
+			state.entityId = action.payload.entityId;
 		},
 		//0.5 Logout
 		logout(state) {
