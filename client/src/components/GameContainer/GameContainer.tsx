@@ -14,8 +14,10 @@ function GameContainer() {
 	useEffect(() => {
 		return () => {
 			if (cardsLeftInGame === 1) {
-				alert('You have won');
-				dispatch(gameWon());
+				setTimeout(() => {
+					alert('You have won');
+					dispatch(gameWon());
+				}, 500);
 			}
 		};
 	}, [cardsLeftInGame, dispatch]);
