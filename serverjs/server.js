@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { createClient } from 'redis';
 import { Entity, Schema, Client, Repository } from 'redis-om';
+import cors from 'cors';
 
 //Redis-OM
 class User extends Entity {}
@@ -24,6 +25,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get('/test/', (req, res) => {
 	res.status(200).json({

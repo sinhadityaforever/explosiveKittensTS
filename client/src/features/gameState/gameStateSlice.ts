@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GameState {
+	isLoggedIn: boolean;
 	diffuses: number;
 	cardsLeft: number;
 	deck: number[];
@@ -16,6 +17,7 @@ interface GameState {
 // };
 
 const initialState: GameState = {
+	isLoggedIn: false,
 	diffuses: 0,
 	cardsLeft: 5,
 	deck: [
@@ -33,6 +35,16 @@ const gameStateSlice = createSlice({
 	name: 'gameState',
 	initialState,
 	reducers: {
+		//0. Login
+		userLogin(state, action: PayloadAction<number>) {
+			state.isLoggedIn = true;
+			state.numberOfWins = action.payload;
+		},
+		//0.5 Logout
+		logout(state) {
+			state.isLoggedIn = false;
+		},
+
 		//1. Cat Card Selected
 		catCard(state) {
 			state.cardsLeft--;
@@ -87,6 +99,8 @@ const gameStateSlice = createSlice({
 });
 
 export const {
+	userLogin,
+	logout,
 	catCard,
 	diffuseCard,
 	shuffleCard,
